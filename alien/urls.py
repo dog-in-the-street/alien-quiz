@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from quiz.models import *
+from django.shortcuts import get_object_or_404, render, redirect
+from quiz import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
+    path('addScore/<int:score>', views.addScore, name='addScore'),
+
 ]

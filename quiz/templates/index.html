@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <!-- 반복문으로 질문과 선택지 나열 
+        해당 선택지를 누르면 링크에서 선택지에 해당하는 점수를 views로 넘겨줌.-->
+        {% for question in questions %}
+        <div style="margin-bottom: 30px;">
+            <div>{{ question.question }}</div>
+            <a href="{% url 'addScore' question.score1 %}">{{ question.option1 }}</a>
+            <a href="{% url 'addScore' question.score2 %}">{{ question.option2 }}</a>
+            <a href="{% url 'addScore' question.score3 %}">{{ question.option3 }}</a>
+            <a href="{% url 'addScore' question.score4 %}">{{ question.option4 }}</a>
+        </div>
+        {% endfor %}
+    <!-- form으로 하면 뭔가 디자인하기 힘들거 같아서 form 안 만들고 
+        링크 url에서 해당하는 점수를 파라미터로 전달하는 방식 -->
+        <div>
+            총 점수는: {{ total_score }}
+        </div>
+    </div>
+</body>
+</html>
