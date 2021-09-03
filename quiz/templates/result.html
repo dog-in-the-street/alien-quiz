@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+</head>
+<body>
+    <!-- 결과 -->
+    <div>
+        {% if total_score < 20 %}
+            {{total_score}}
+            돌!
+        {% elif total_score < 40 %}
+            {{total_score}}
+            2등급!
+        {% elif total_score < 60 %}
+            {{total_score}}
+            3등급!
+        {% elif total_score < 80 %}
+            {{total_score}}
+            4등급
+        {% elif total_score < 100 %}
+            {{total_score}}
+            5등급
+        {% endif %}
+    </div>
+
+
+    <!-- 테스트 다시하기 버튼. 점수 초기화하고 다시 첫 페이지로 이동.-->
+    <div id="test-reset">
+        <a href="{% url 'reset' %}"><button>테스트 다시하기</button></a>
+        <!-- <img src="" alt=""> -->
+    </div>
+    
+
+    <!-- url 복사 버튼. 현재 url를 복사되게 만들어주기. -->
+    <input type="text" id = "ShareUrl">
+    <span class="url-btn">
+        <button OnClick="javascript:CopyUrlToClipboard()">URL 복사</button>
+        <!-- <img src="" alt="" OnClick="javascript:CopyUrlToClipboard()"> -->
+    </span>
+
+
+    <!-- 카카오톡 공유 버튼 -->
+    <div id="kakaotalk-share">
+        <a href="javascript:sendLinkKakao()" id="kakao-link-btn" title="카카오톡으로 공유">
+            <button>카카오톡 공유하기</button>
+            <!-- <img src="" alt=""> -->
+        </a>
+    </div>
+
+
+    <script>
+        // 클립보드로 url 복사
+        function CopyUrlToClipboard() {
+            var obShareUrl = document.getElementById("ShareUrl");
+            obShareUrl.value = window.document.location.href;  // 현재 URL을 복사하는 경우.
+            // obShareUrl.value = 'http://www.abc.com/';  // 특정 url을 복사하는 경우.
+            
+
+            obShareUrl.select();  // 해당 값이 선택되도록 select() 
+            document.execCommand("copy"); // 클립보드에 복사
+            obShareUrl.blur(); 
+                
+            alert("URL이 클립보드에 복사되었습니다"); // 버튼 눌렀을 때 뜨는 alert 메시지.
+        }
+        var obShareUrl = document.getElementById("ShareUrl");
+        obShareUrl.value = window.document.location.href;  // 현재 URL을 복사하는 경우.
+        // obShareUrl.value = 'http://www.abc.com/'; // 특정 url을 복사해야 하는 경우.
+
+        // 카카오톡 공유
+        Kakao.init('58772ed23236c0a883c9ca150f9b5194'); // 카카오 디벨로퍼에서 앱 등록.
+        function sendLinkKakao(){
+            Kakao.Link.sendDefault({
+            objectType: 'feed',
+            content: {
+                // 카톡 메시지에서 제목
+                title: '아이유', 
+                // 설명
+                description: '짱짱', 
+                // 카톡 메시지에 뜨는 이미지. (결과 이미지)
+                imageUrl: 'https://pbs.twimg.com/media/ExUElF7VcAMx7jx?format=jpg&name=medium', 
+                // mibileWebUrl, webUrl, buttons에 있는 link 모두 동일한 url 넣기.
+                link: {
+                mobileWebUrl: '{{ request.build_absolute_uri }}', // 현재 url 
+                webUrl: '{{ request.build_absolute_uri }}'
+                }
+                // 특정 url로 연결되도록 하려면 mobileWebUrl: 'url', 과 같이 url을 직접 입력해주면 됨.
+            },
+            buttons: [       
+                {
+                    title: '링크 열기',
+                    link: {
+                        mobileWebUrl: '{{ request.build_absolute_uri }}',
+                        webUrl: '{{ request.build_absolute_uri }}'
+                    }
+                }
+            ]
+            }); 
+}
+
+    </script>
+</body>
+</html>

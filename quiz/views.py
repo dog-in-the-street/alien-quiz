@@ -10,6 +10,8 @@ total_score = 0
 def index(request):
     questions = Question.objects.all() # 모델 전체를 가져옴.
     global total_score # 점수 총합
+    
+   
     return render(request, 'index.html', {"questions":questions, "total_score":total_score})
 
 
@@ -20,4 +22,17 @@ def addScore(request, score): # 선택지에 해당하는 점수 == score,  html
     
     return redirect('index')
 
+
+#결과페이지
+def result(request):
+    global total_score
+    # 점수에 따라서 해당하는 이미지를 보여줘야 함. 
+    return render(request,'result.html', {"total_score":total_score})
+
+
+# 테스트 다시하기
+def reset(request):
+    global total_score
+    total_score = 0 # 점수 0으로 초기화시키기.
+    return redirect('index') # redirect하는 페이지의 url name을 넣어주기.
 

@@ -23,5 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('addScore/<int:score>', views.addScore, name='addScore'),
+    path('result/', views.result, name='result'),
+    path('reset/', views.reset, name='reset'),
 
 ]
